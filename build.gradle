@@ -1,0 +1,102 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020 Diego Urrutia-Astorga <durrutia@ucn.cl>.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+// Install the gradle Ice Builder plug-in from the plug-in portal
+plugins {
+    // https://plugins.gradle.org/plugin/com.zeroc.gradle.ice-builder.slice
+    id 'com.zeroc.gradle.ice-builder.slice' version '1.4.7' apply false
+
+    // https://plugins.gradle.org/plugin/com.github.ben-manes.versions
+    id 'com.github.ben-manes.versions' version '0.28.0' apply true
+}
+
+// The root project
+group 'cl.disc.ucn.pdis'
+version '1.0.6'
+
+allprojects {
+    // buildDir = "${System.env.TEMP}//gradle-build//${rootProject.name}//${project.name}"
+    // logger.lifecycle("Version(${BUILD_VERSION}) BuildDir(${buildDir})")
+}
+
+subprojects {
+
+    // Apply Java and Ice Builder plug-ins to all sub-projects
+    apply plugin: 'java'
+    apply plugin: 'com.zeroc.gradle.ice-builder.slice'
+
+    // Java code version
+    sourceCompatibility = 1.8
+
+    // Testing configuration
+    test {
+
+        // Enable JUnit Platform (a.k.a. JUnit 5) support
+        useJUnitPlatform()
+
+        // failFast = true
+
+        // Run the test in parallel
+        systemProperty 'junit.jupiter.execution.parallel.enabled', 'true'
+        systemProperty 'junit.jupiter.execution.parallel.mode.default', 'concurrent'
+    }
+
+    // Both Client and Server projects share the *.ice Slice definitions
+    slice {
+
+        // The home of ice
+        //iceHome = 'd:\\DevTools\\Ice-3.7.3\\'
+
+        java {
+            files = [file("../slice/domain.ice")]
+            // args = "--debug --impl"
+            logger.lifecycle("Slicing file: <${files}>")
+        }
+    }
+
+    // Use Ice JAR files from maven central repository
+    repositories {
+        mavenCentral()
+    }
+
+    // Both Client and Server depend only on Ice JAR
+    dependencies {
+
+        // JUnit
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0-M1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0-M1'
+
+        // Zero ICE
+        implementation 'com.zeroc:ice:3.7.3'
+
+        // SLF4J
+        implementation 'org.slf4j:slf4j-api:1.7.30'
+        implementation 'ch.qos.logback:logback-classic:1.3.0-alpha5'
+
+        // Apache Commons Lang
+        implementation 'org.apache.commons:commons-lang3:3.10'
+
+    }
+
+}
