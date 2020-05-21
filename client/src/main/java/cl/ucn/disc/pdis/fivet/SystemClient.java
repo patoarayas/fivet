@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 Diego Urrutia-Astorga <durrutia@ucn.cl>.
+ * Copyright (c) 2020 Patricio Araya González <patricio.araya@alumnos.ucn.cl>.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,9 @@
 
 package cl.ucn.disc.pdis.fivet;
 
-import cl.ucn.disc.pdis.fivet.zeroice.model.TheSystem;
-import cl.ucn.disc.pdis.fivet.zeroice.model.TheSystemPrx;
+import cl.ucn.disc.pdis.fivet.zeroice.model.Sistema;
+import cl.ucn.disc.pdis.fivet.zeroice.model.Sistema;
+import cl.ucn.disc.pdis.fivet.zeroice.model.SistemaPrx;
 import com.zeroc.Ice.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,9 +63,9 @@ public final class SystemClient {
         try (Communicator communicator = Util.initialize(getInitializationData(args))) {
 
             // Running in port 8080
-            ObjectPrx theProxy = communicator.stringToProxy(TheSystem.class.getName() + ":default -p 8080 -z");
+            ObjectPrx theProxy = communicator.stringToProxy(System.class.getName() + ":default -p 8080 -z");
 
-            TheSystemPrx theSystem = TheSystemPrx.checkedCast(theProxy);
+            SistemaPrx theSystem = SistemaPrx.checkedCast(theProxy);
 
             if (theSystem == null) {
                 throw new IllegalStateException("Invalid TheSystem! (wrong proxy?)");

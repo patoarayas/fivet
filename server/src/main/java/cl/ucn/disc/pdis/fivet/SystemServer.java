@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 Diego Urrutia-Astorga <durrutia@ucn.cl>.
+ * Copyright (c) 2020 Patricio Araya González <patricio.araya@alumnos.ucn.cl>.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 package cl.ucn.disc.pdis.fivet;
 
-import cl.ucn.disc.pdis.fivet.zeroice.model.TheSystem;
+import cl.ucn.disc.pdis.fivet.zeroice.model.Sistema;
 import com.zeroc.Ice.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,10 +63,10 @@ public final class SystemServer {
             ObjectAdapter adapter = communicator.createObjectAdapterWithEndpoints("TheAdapter", "default -p 8080 -z");
 
             // Inline implementation (Lambda)
-            TheSystem theSystem = (clientTime, current) -> System.currentTimeMillis() - clientTime;
+            Sistema theSystem = (clientTime, current) -> System.currentTimeMillis() - clientTime;
 
             // The unique identity
-            Identity identity = Util.stringToIdentity(TheSystem.class.getName());
+            Identity identity = Util.stringToIdentity(Sistema.class.getName());
             log.debug("Using name [{}] and category [{}] as identity.", identity.name, identity.category);
 
             // Register the API in the framework
