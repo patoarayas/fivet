@@ -97,6 +97,12 @@ subprojects {
         // Apache Commons Lang
         implementation 'org.apache.commons:commons-lang3:3.10'
 
+        // ORM Lite
+        implementation 'com.j256.ormlite:ormlite-core:5.1'
+        implementation 'com.j256.ormlite:ormlite-jdbc:5.1'
+
+        // DB driver
+        implementation 'com.h2database:h2:1.4.200'
     }
 
 }
