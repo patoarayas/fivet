@@ -62,8 +62,13 @@ public final class SystemClient {
 
         try (Communicator communicator = Util.initialize(getInitializationData(args))) {
 
+            // Nombre de la interfaz
+            String name = Sistema.class.getSimpleName();
+            log.debug("Proxy <{}>", name);
+
             // Running in port 8080
-            ObjectPrx theProxy = communicator.stringToProxy(System.class.getName() + ":default -p 8080 -z");
+            // ":default -p 8080 -z" anterior
+            ObjectPrx theProxy = communicator.stringToProxy(name + ":tcp -z -t 15000 -p 8080");
 
             SistemaPrx theSystem = SistemaPrx.checkedCast(theProxy);
 
@@ -74,10 +79,6 @@ public final class SystemClient {
             long delay = theSystem.getDelay(System.currentTimeMillis());
             log.debug("Delay: {}ms.", delay);
 
-            /*
-            EnginePrx engine = EnginePrx.checkedCast(proxy);
-
-            */
 
         }
 
